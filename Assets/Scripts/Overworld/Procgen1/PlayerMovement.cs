@@ -8,13 +8,14 @@ public class PlayerMovement : MonoBehaviour
     public Transform movePoint;
     public LayerMask whatStopsMovement; 
 
-    void Start()
-    {
-        movePoint.parent = null;
-    }
-
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            // set the movepoint as child of the player when resetting
+            movePoint.parent = transform;
+        }
+
         // move towards the movePoint, this will keep player on a grid
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 
@@ -22,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
             {
+                movePoint.parent = null;
+
                 // if nothing in the position the player is trying to move to, then allow movement
                 if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f), 0.2f, whatStopsMovement))
                 {
@@ -30,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
             {
+                movePoint.parent = null;
+
                 // if nothing in the position the player is trying to move to, then allow movement
                 if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f), 0.2f, whatStopsMovement))
                 {
